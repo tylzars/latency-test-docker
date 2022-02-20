@@ -1,7 +1,9 @@
 # Import Functions
 import argparse
+import os
 from tcp_latency import measure_latency
 from pythonping import ping
+import ping3
 
 # Ping the passed host and return a dictionary of ping statistics
 def ping_host(in_host):
@@ -17,26 +19,15 @@ def ping_host(in_host):
 
     return result_dict
 
-# Get Command Line Args
-parser = argparse.ArgumentParser(description='For index images analysis')
-parser.add_argument('--destination', dest='destination', type=str, help='destination', metavar='destination', default='google.com')
-parser.add_argument('--database_ip', dest='database_ip', type=str, help='database_ip', default="192.168.1.1")
-parser.add_argument('--extra', dest='extra', type=int, help='extra', default=10)
-
-# Parse args into Namespace
-args = parser.parse_args()
-
-# Switch Namespace into a Dictionary
-args_dict = vars(args)
-
-# Debug Statements
-#print(args)
-#print(d)
+# Get vars set in Dockerfile / user input
+destinations = os.environ['DESTINATIONS']
+database_ip = os.environ['DATABASE-IP']
 
 # Split comma seperated list of destinations
-split_destinations = args_dict["destination"].split(",")
+split_destinations = destinations.split(",")
 
 # For each passed host, let us run our ping stats
 for host in split_destinations:
-    print(measure_latency(host=host))
+    print(measure_latency(host=host,runs=5, timeout=5))
     print(ping_host(host))
+    print(ping3.ping(host, unit='ms'))
