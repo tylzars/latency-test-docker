@@ -1,5 +1,4 @@
 # Import Functions
-import argparse
 import os
 from tcp_latency import measure_latency
 from pythonping import ping
