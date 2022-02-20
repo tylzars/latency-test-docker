@@ -3,5 +3,5 @@ tcp-latency
 pythonping
 ping3
 
-# Command Line Args
-argparse
+# Database Writing
+requests
